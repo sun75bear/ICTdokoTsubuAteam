@@ -19,5 +19,6 @@
     <body>
         <h1>メイン画面だよ！</h1>
         <p><%= loginUser.getName() %>さんがログインしてます！</p>
+        <a href="Logout">ログアウトボタン！</a>
     </body>
 </html>
