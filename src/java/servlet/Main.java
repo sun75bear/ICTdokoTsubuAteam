@@ -75,6 +75,16 @@ public class Main extends HttpServlet {
         //リストが無かった場合には、新規作成してアプリケーションスコープへsetAttributeする作業を行う（初期化？）
         if (mutterList == null){
             mutterList = new ArrayList<>();
+            // ★★★ テストデータを3つ作成し、リストに追加 ★★★
+            Mutter mutter1 = new Mutter("テストユーザー1", "テストデータその1：つぶやきアプリへようこそ！");
+            Mutter mutter2 = new Mutter("テストユーザー2", "テストデータその2：このアプリの動作確認中だよ。");
+            Mutter mutter3 = new Mutter("ゲスト", "テストデータその3：Applicationスコープに追加されました。");
+
+            mutterList.add(mutter3);            
+            mutterList.add(mutter2);
+            mutterList.add(mutter1); 
+            // ★★★ テストデータ追加完了 ★★★
+            
             application.setAttribute("mutterList",mutterList);
         }
         //ログインしているかどうかを確認するために、セッションスコープからユーザー情報を取得
@@ -106,6 +116,7 @@ public class Main extends HttpServlet {
         //POSTからtextを取得
         request.setCharacterEncoding("UTF-8");
         String text = request.getParameter("text");
+<<<<<<< Updated upstream
         //ログインユーザー情報をセッションから取得し、userNameを取得
         HttpSession session = request.getSession();
         User loginUser = (User) session.getAttribute("loginUser");
@@ -118,6 +129,26 @@ public class Main extends HttpServlet {
         //追加する部分はPostMutterLogicのexecuteメソッドに処理させる
         PostMutterLogic postMutterLogic = new PostMutterLogic();
         postMutterLogic.execute(mutter,mutterList);
+=======
+        //textがnullまたは空白でないなら処理を行う
+        if (text != null && text.length() != 0){
+            //ログインユーザー情報をセッションから取得し、userNameを取得
+            HttpSession session = request.getSession();
+            User loginUser = (User) session.getAttribute("loginUser");
+            String userName = loginUser.getName();
+            //つぶやきリストをアプリケーションから取得
+            ServletContext application = this.getServletContext();
+            List<Mutter> mutterList = (List<Mutter>)application.getAttribute("mutterList");
+            //リストに追加する要素を構成
+            Mutter mutter = new Mutter(userName,text);        
+            //リストに追加する部分はPostMutterLogicのexecuteメソッドに処理させる
+            PostMutterLogic postMutterLogic = new PostMutterLogic();
+            postMutterLogic.execute(mutter,mutterList);
+        }else{
+            //テキストなしのエラーメッセージをリクエストスコープに保存する
+            request.setAttribute("errorMsg", "つぶやきが入力されていません");
+        }
+>>>>>>> Stashed changes
         //mainpageにフォワードする
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("WEB-INF/jsp/mainpage.jsp");

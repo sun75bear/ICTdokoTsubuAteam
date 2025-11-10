@@ -62,7 +62,6 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //IDとpasswordを入力するフォームへのフォワード
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("WEB-INF/jsp/loginForm.jsp");
         dispatcher.forward(request, response);

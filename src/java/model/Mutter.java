@@ -11,13 +11,19 @@ import java.io.Serializable;
  * @author abi06
  */
 public class Mutter implements Serializable{
+    private int id;
     private String userName;
     private String text;
+    private int good;
+    private int bad;
     
     public Mutter(){}
     public Mutter(String userName,String text){
+        this.id = 0;
         this.userName = userName;
-        this.text = text;    
+        this.text = text;
+        this.good = 0;
+        this.bad = 0;
     }
 
     public String getUserName() {
@@ -26,6 +32,14 @@ public class Mutter implements Serializable{
 
     public String getText() {
         return text;
+    }
+
+    public int getGood() {
+        return good;
+    }
+
+    public int getBad() {
+        return bad;
     }
     
 }

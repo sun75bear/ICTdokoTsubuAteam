@@ -13,9 +13,12 @@ import java.io.Serializable;
 public class User implements Serializable{
     private String name;
     private String pass;
+    private int id;
     
     public User(){}
     public User(String name,String pass){
+        //idは仮の値で初期化、ほんとはログイン成功時のIDを引き継いでuserを作ってsessionに保存したものを使う
+        this.id = 114514;
         this.name = name;
         this.pass = pass;
     }
@@ -26,6 +29,10 @@ public class User implements Serializable{
 
     public String getPass() {
         return pass;
+    }
+
+    public int getId() {
+        return id;
     }
     
 }
