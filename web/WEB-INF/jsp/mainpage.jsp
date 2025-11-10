@@ -19,8 +19,7 @@
     //Mutteridは投稿順で管理する→そのシステムは削除に対応するのが難しい、post時に一意のIDを取得して振っておくべき
     List<Mutter> mutterList = (List<Mutter>)application.getAttribute("mutterList");
 %>
-<<<<<<< Updated upstream
-=======
+
 <%
     //
     String errorMsg = (String)request.getAttribute("errorMsg");
@@ -54,7 +53,6 @@
     //全てのつぶやきを収集して、ランダムに３つ表示するロジック（荒木
     //ロジックを処理して返すサーブレット（神田
 %>
->>>>>>> Stashed changes
 <!DOCTYPE html>
 <html>
     <head>

@@ -116,20 +116,6 @@ public class Main extends HttpServlet {
         //POSTからtextを取得
         request.setCharacterEncoding("UTF-8");
         String text = request.getParameter("text");
-<<<<<<< Updated upstream
-        //ログインユーザー情報をセッションから取得し、userNameを取得
-        HttpSession session = request.getSession();
-        User loginUser = (User) session.getAttribute("loginUser");
-        String userName = loginUser.getName();
-        //つぶやきリストをアプリケーションから取得
-        ServletContext application = this.getServletContext();
-        List<Mutter> mutterList = (List<Mutter>)application.getAttribute("mutterList");
-        //リストに追加する要素を構成
-        Mutter mutter = new Mutter(userName,text);        
-        //追加する部分はPostMutterLogicのexecuteメソッドに処理させる
-        PostMutterLogic postMutterLogic = new PostMutterLogic();
-        postMutterLogic.execute(mutter,mutterList);
-=======
         //textがnullまたは空白でないなら処理を行う
         if (text != null && text.length() != 0){
             //ログインユーザー情報をセッションから取得し、userNameを取得
@@ -148,7 +134,6 @@ public class Main extends HttpServlet {
             //テキストなしのエラーメッセージをリクエストスコープに保存する
             request.setAttribute("errorMsg", "つぶやきが入力されていません");
         }
->>>>>>> Stashed changes
         //mainpageにフォワードする
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("WEB-INF/jsp/mainpage.jsp");
