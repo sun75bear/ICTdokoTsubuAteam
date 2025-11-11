@@ -13,6 +13,7 @@
     </head>
     <body>
         <h1>ログインフォーム入力欄</h1>
+        <p>※ユーザー名とパスワードは空白でも通ります</p>
         <form action="Login" method="post">
             ユーザー名<input type="text" name="name"><br>
             パスワード:<input type="password" name="pass"><br>
