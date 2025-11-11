@@ -75,11 +75,29 @@ public class Main extends HttpServlet {
         //リストが無かった場合には、新規作成してアプリケーションスコープへsetAttributeする作業を行う（初期化？）
         if (mutterList == null){
             mutterList = new ArrayList<>();
-            // ★★★ テストデータを3つ作成し、リストに追加 ★★★
-            Mutter mutter1 = new Mutter("テストユーザー1", "テストデータその1：つぶやきアプリへようこそ！");
-            Mutter mutter2 = new Mutter("テストユーザー2", "テストデータその2：このアプリの動作確認中だよ。");
-            Mutter mutter3 = new Mutter("ゲスト", "テストデータその3：Applicationスコープに追加されました。");
+            // ★★★ テストデータを１２こ作成し、リストに追加 ★★★
+            Mutter mutter1 = new Mutter("奥本", "データ１、つぶやきアプリへようこそ！",0);
+            Mutter mutter2 = new Mutter("奥本", "データ2、このアプリの動作確認中だよ。",5);
+            Mutter mutter3 = new Mutter("奥本", "データ3、離職者によるさこだ車両の不正内部告発",7);
+            Mutter mutter4 = new Mutter("奥本", "データ４、さこだ車両オイル交換サービス",2);
+            Mutter mutter5 = new Mutter("神田", "データ５、このアプリの動作確認中だよ。",1);
+            Mutter mutter6 = new Mutter("城山", "データ６、Applicationスコープに追加されました。",5);
+            Mutter mutter7 = new Mutter("長谷川", "データ７、たまたまだよ",8);
+            Mutter mutter8 = new Mutter("八反地", "データ８、たまにね",10);
+            Mutter mutter9 = new Mutter("渡辺", "データ９、今はまだたまねぎ",4);
+            Mutter mutter10 = new Mutter("荒木", "データ１０、明日は明日の風が吹く",2);
+            Mutter mutter11 = new Mutter("安藤", "データ１１、幸せ風味",3);
+            Mutter mutter12 = new Mutter("江原", "データ１２、お書上げ",0);
 
+            mutterList.add(mutter12);            
+            mutterList.add(mutter11);
+            mutterList.add(mutter10);
+            mutterList.add(mutter9);            
+            mutterList.add(mutter8);
+            mutterList.add(mutter7);            
+            mutterList.add(mutter6);            
+            mutterList.add(mutter5);
+            mutterList.add(mutter4);
             mutterList.add(mutter3);            
             mutterList.add(mutter2);
             mutterList.add(mutter1); 
