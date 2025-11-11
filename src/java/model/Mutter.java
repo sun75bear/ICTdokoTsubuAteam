@@ -25,9 +25,16 @@ public class Mutter implements Serializable{
         this.good = 0;
         this.bad = 0;
     }
-    //テスト用、コンストラクタのいいね引数は廃止して、JAVABEANS準拠にする事
+    //テスト用、コンストラクタのidいいね引数は廃止して、JAVABEANS準拠にする事
     public Mutter(String userName,String text,int good){
         this.id = 0;
+        this.userName = userName;
+        this.text = text;
+        this.good = good;
+        this.bad = 0;
+    }
+    public Mutter(int id,String userName,String text,int good){
+        this.id = id;
         this.userName = userName;
         this.text = text;
         this.good = good;
