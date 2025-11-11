@@ -56,5 +56,9 @@ public class Mutter implements Serializable{
     public int getBad() {
         return bad;
     }
+
+    public int getId() {
+        return id;
+    }
     
 }

@@ -72,7 +72,7 @@
         <div>
             <% for (Mutter mutter : mutterList){%>
                 <p>
-                    <%= mutter.getUserName() %>：<%= mutter.getText() %>：いいね＝<%= mutter.getGood()%>：よくないね＝<%=mutter.getBad()%>
+                    <%= mutter.getId() %>：<%= mutter.getUserName() %>：<%= mutter.getText() %>：いいね＝<%= mutter.getGood()%>：よくないね＝<%=mutter.getBad()%>
                 </p>
             <%}%>
         </div>
