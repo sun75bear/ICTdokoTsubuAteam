@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Mutter;
-import model.PostMutterLogic;
 import model.User;
 import java.util.UUID;
 
@@ -83,11 +82,11 @@ public class Main extends HttpServlet {
             //「つぶやきリスト」を生成して、アプリケーションスコープに保存
             mutterList = new ArrayList<>();
                         // ★★★ テストデータを１２こ作成し、リストに追加 ★★★
-                        // mutterIdに対応
+                        // String　mutterIdに対応
             Mutter mutter1 = new Mutter("f8d9b1a0-1c3b-4e5a-8f7d-2a6c9e4b3d1f","奥本", "データ１、つぶやきアプリへようこそ！",0);
             Mutter mutter2 = new Mutter("c7e6a9b1-2d4e-5f6b-9c8a-3b7d5e9f1a2c","奥本", "データ2、このアプリの動作確認中だよ。",5);
-            Mutter mutter3 = new Mutter("a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d","奥本", "データ3、離職者によるさこだ車両の不正内部告発",7);
-            Mutter mutter4 = new Mutter("8e7d6c5b-4a3f-2e1d-0c9b-8a7f6e5d4c3b","奥本", "データ４、さこだ車両オイル交換サービス",2);
+            Mutter mutter3 = new Mutter("a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d","奥本", "データ3、離職者によるサコダ車両の不正内部告発",7);
+            Mutter mutter4 = new Mutter("8e7d6c5b-4a3f-2e1d-0c9b-8a7f6e5d4c3b","奥本", "データ４、サコダ車両オイル交換サービス",2);
             Mutter mutter5 = new Mutter("3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f","神田", "データ５、このアプリの動作確認中だよ。",1);
             Mutter mutter6 = new Mutter("f9e8d7c6-b5a4-9d8c-7b6a-5f4e3d2c1b0a","城山", "データ６、Applicationスコープに追加されました。",5);
             Mutter mutter7 = new Mutter("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d","長谷川", "データ７、たまたまだよ",8);
@@ -147,61 +146,39 @@ public class Main extends HttpServlet {
         //リクエストパラメータから取り出す
         request.setCharacterEncoding("UTF-8");
         String text = request.getParameter("text");
+        //セッションスコープを操作する為にsessionインスタンスを作成
+        HttpSession session = request.getSession();        
         
         //投稿内容のチェック
+         //何かしら文字が入力されている場合（空欄でない場合）
         if(text != null && text.length()!= 0){
-            //何かしら文字が入力されている場合（空欄でない場合）
-            //「つぶやきリスト」をアプリケーションスコープを取り出す
-            ServletContext application = this.getServletContext();
-            List<Mutter> mutterList = 
-                (List<Mutter>)application.getAttribute("mutterList");
-            
-            //「ログインしているユーザー情報」をセッションスコープから取り出す
-            HttpSession session = request.getSession();
-            User loginUser = (User)session.getAttribute("loginUser");
-            
-            
+            //セッションからloginUserインスタンスを取得
+            User loginUser = (User)session.getAttribute("loginUser");           
             // --- ここでUUIDを生成 ---
-        // UUID.randomUUID() はUUID v4 (ランダムベース) を生成します。
-        UUID newUuid = UUID.randomUUID();
-        // UUIDオブジェクトをString型に変換
-        String mutterId = newUuid.toString();
-        // Tweetインスタンスを作成し、IDを格納
-        //Tweet newTweet = new Tweet(input_text, tweetIdStr);
-        
+            // UUID.randomUUID() はUUID v4 (ランダムベース) を生成します。
+            UUID newUuid = UUID.randomUUID();
+            // UUIDオブジェクトをIDとして扱いやすいString型に変換
+            String mutterId = newUuid.toString();
+            //つぶやきをmutterに格納
+            Mutter mutter = new Mutter(loginUser.getName(), text, mutterId);
+            //セッションにmutterを、sessionMutterListの中に入れる形で保存
             List<Mutter> sessionMutterList = (List<Mutter>) session.getAttribute("sessionMutterList");
                 if (sessionMutterList == null) {
                     sessionMutterList = new ArrayList<>();
-                }
-            //「ユーザー名」と「投稿内容」で「つぶやき」インスタンスを生成し、
-            //セッションスコープ保存用リストsessionMutterListに格納する                
-            Mutter mutter = new Mutter(loginUser.getName(), text, mutterId);
+                }             
             sessionMutterList.add(mutter);
             session.setAttribute("sessionMutterList", sessionMutterList);
-            //////過去バージョン///////////////////////////////////////////
-            //今はokumotoセッションに保存してフォワードした後、Addlistがつぶやきを追加する
-//            //「つぶやきリスト」に新しい「つぶやき」を追加する
-//            PostMutterLogic postMutterLogic = new PostMutterLogic();
-//            postMutterLogic.execute(mutter, mutterList);
-//            
-//            //アプリケーションスコープへ「つぶやきリスト」を保存
-//            application.setAttribute("mutterList", mutterList);
-/////////////////////////////////////////////////////////////////
+            //セッションにsessionMutterListが入ったら、AddListにフォワード
+            RequestDispatcher dispatcher =
+                    request.getRequestDispatcher("/AddList");
+            dispatcher.forward(request, response);
         }else{
             //投稿内容が空欄の場合、リクエストスコープにエラーメッセージを保存して送信
-            //セッションを破棄しないといけない
-            HttpSession session = request.getSession();
-            session.removeAttribute("sessionMutterList");
             request.setAttribute("errorMsg","つぶやきが入力されていません");
             RequestDispatcher dispatcher =
                     request.getRequestDispatcher("/Main");
             dispatcher.forward(request, response);            
-        }
-        
-        //mainでなくAddListにフォワード
-        RequestDispatcher dispatcher =
-                request.getRequestDispatcher("/AddList");
-        dispatcher.forward(request, response);
+        }        
     }
 
     /**

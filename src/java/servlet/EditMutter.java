@@ -13,17 +13,18 @@ import model.Mutter;
 
 @WebServlet("/EditMutter")
 public class EditMutter extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //mutterIDでのリファクタリングが必要
         // 文字コードの指定（日本語対応）
         request.setCharacterEncoding("UTF-8");
 
-        // 投稿IDの取得
-        int id = Integer.parseInt(request.getParameter("mutterId"));
-        System.out.println("編集対象ID: " + id); // ログ出力
+        // 投稿IDの取得(mutterId)
+        String editMutterId = request.getParameter("mutterId");
+        System.out.println("編集対象ID: " + editMutterId); // ログ出力
 
-        // 投稿リストを取得
+        // アプリケーションスコープから投稿リストを取得
         List<Mutter> mutterList = (List<Mutter>) getServletContext().getAttribute("mutterList");
 
         if (mutterList == null) {
@@ -32,10 +33,10 @@ public class EditMutter extends HttpServlet {
             return;
         }
 
-        // 編集対象の投稿を探す
+        // 編集対象の投稿を探す、String同士の比較だから==ではなく.equals()で比較する
         Mutter target = null;
         for (Mutter mutter : mutterList) {
-            if (mutter.getId() == id) {
+            if (mutter.getMutterId().equals(editMutterId)) {
                 target = mutter;
                 break;
             }
@@ -43,14 +44,14 @@ public class EditMutter extends HttpServlet {
 
         if (target == null) {
             System.out.println("指定されたIDの投稿が見つかりませんでした！");
-            response.sendRedirect("Main"); // 投稿が見つからない場合もメインへ戻す
+            response.sendRedirect("MyPage"); // 投稿が見つからない場合はマイページへリダイレクトして処理を終了
             return;
         }
 
         // 編集対象をリクエストスコープに保存
         request.setAttribute("editMutter", target);
 
-        // 編集画面へフォワード
+        // editMutterの編集画面へフォワード
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/edit.jsp");
         dispatcher.forward(request, response);
     }

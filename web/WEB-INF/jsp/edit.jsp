@@ -49,14 +49,15 @@
 <body>
     <h1>投稿の編集</h1>
     <div class="form-box">
+        <!--TODO UpdateMutterのリファクタリング-->
         <form action="UpdateMutter" method="post">
-            <input type="hidden" name="id" value="<%= editMutter.getId() %>">
+            <input type="hidden" name="mutterId" value="<%= editMutter.getMutterId() %>">
             <input type="text" name="text" value="<%= editMutter.getText() %>">
             <br>
             <input type="submit" value="更新" class="update-btn">
         </form>
 
-        <form action="myPage" method="get">
+        <form action="MyPage" method="get">
             <input type="submit" value="マイページへ戻る" class="back-btn">
         </form>
     </div>
