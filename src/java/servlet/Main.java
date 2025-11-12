@@ -17,12 +17,8 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Mutter;
-import model.Mutter;
-import model.Mutter;
 import model.User;
 import model.PostMutterLogic;
-import model.User;
-import model.User;
 
 /**
  *

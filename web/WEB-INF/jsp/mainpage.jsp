@@ -63,11 +63,12 @@
         <h1>メイン画面だよ！</h1>
         <p><%= loginUser.getName() %>さん、ID=<%= loginUser.getId()%>がログインしてます！</p>
         <article>
-            <a href="Main">画面更新ボタン</a><br>
+            <a href="/Main">更新</a><br>
             <form action="Main" method="post">
                 <input type="text" name="text">
                 <input type="submit" value="つぶやく">
             </form>
+            <a href="/hoge">閲覧履歴</a><br>
         </article>
         <div>
             <% for (Mutter mutter : mutterList){%>
