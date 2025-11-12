@@ -57,18 +57,21 @@ public class Logout extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
+     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //セッションの破棄を行う
+        //processRequest(request, response);
+        
+        //セッションスコープを削除
+        //(このアプリではスコープ内のインスタンスを削除することでログアウトとしている)
+        
         HttpSession session = request.getSession();
-        session.invalidate();
-        //ログアウト画面へのフォワード
+        session.invalidate();//セッションスコープを削除するメソッド
+        
+        //ログイン画面へフォワード
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("WEB-INF/jsp/logout.jsp");
         dispatcher.forward(request, response);
-        //インデックスへのリダイレクトを実行
-        //response.sendRedirect("index.jsp");
     }
 
     /**

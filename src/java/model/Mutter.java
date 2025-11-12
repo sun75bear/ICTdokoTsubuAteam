@@ -12,37 +12,46 @@ import java.io.Serializable;
  */
 public class Mutter implements Serializable{
     private int id;
-    private String userName;
+    private String mutterId;
+    private String username;
     private String text;
     private int good;
     private int bad;
     
     public Mutter(){}
-    public Mutter(String userName,String text){
+    public Mutter(String username,String text){
+        //後々、IDをmutterIDに変えるべき
         this.id = 0;
-        this.userName = userName;
+        this.username = username;
         this.text = text;
         this.good = 0;
         this.bad = 0;
     }
+    //abi04、mutterIdで保存、統合が終わったら以後それを使う
+        public Mutter(String username, String text, String mutterId) {
+        this.username = username;
+        this.text = text;
+        this.mutterId = mutterId;
+    }
+    
     //テスト用、コンストラクタのidいいね引数は廃止して、JAVABEANS準拠にする事
-    public Mutter(String userName,String text,int good){
+    public Mutter(String username,String text,int good){
         this.id = 0;
-        this.userName = userName;
+        this.username = username;
         this.text = text;
         this.good = good;
         this.bad = 0;
     }
-    public Mutter(int id,String userName,String text,int good){
+    public Mutter(int id,String username,String text,int good){
         this.id = id;
-        this.userName = userName;
+        this.username = username;
         this.text = text;
         this.good = good;
         this.bad = 0;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getText() {
@@ -60,5 +69,7 @@ public class Mutter implements Serializable{
     public int getId() {
         return id;
     }
-    
+    public String getmutterId() {
+        return mutterId;
+    }
 }

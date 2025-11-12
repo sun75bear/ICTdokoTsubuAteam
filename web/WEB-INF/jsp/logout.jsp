@@ -4,17 +4,17 @@
     Author     : abi06
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>ログアウト</title>
+        <title>どこつぶ</title>
     </head>
     <body>
-        <h1>ログアウトページです！</h1>
+        <h1>どこつぶログアウト</h1>
         <p>ログアウトしました</p>
-        <a href="index.jsp">トップページへ</a><br>
-        <a href="Login">ログインページへ</a>
+        <a href="index.jsp">トップへ</a>
     </body>
 </html>
+

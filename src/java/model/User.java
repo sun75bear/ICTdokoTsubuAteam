@@ -8,19 +8,22 @@ import java.io.Serializable;
 
 /**
  *
- * @author abi06
+ * @author abi04
  */
 public class User implements Serializable{
+    //フィールド
     private String name;
     private String pass;
-    private int id;
+    public int userId;
     
+    
+    //コンストタ
     public User(){}
-    public User(String name,String pass){
-        //idは仮の値で初期化、ほんとはログイン成功時のIDを引き継いでuserを作ってsessionに保存したものを使う
-        this.id = 114514;
+    
+    public User(String name, String pass,int userId) {
         this.name = name;
         this.pass = pass;
+        this.userId = userId;
     }
 
     public String getName() {
@@ -30,9 +33,9 @@ public class User implements Serializable{
     public String getPass() {
         return pass;
     }
-
-    public int getId() {
-        return id;
+    
+    public int getUserId() {
+        return userId;
     }
     
 }

@@ -4,14 +4,33 @@
     Author     : abi06
 --%>
 
-<%@page language="java" contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="style/login.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>どこつぶ</title>
     </head>
+  
     <body>
-        <a href="Login">どこつぶへようこそ</a>
+        <div id="container">
+        <div id="incontainer">
+        <h1>どこつぶへようこそ</h1>
+        <form action="Login" method="post">
+            
+            ユーザー名：<input type="text" name="name"><br>
+            パスワード：<input type="password" name="pass"><br>
+            <input type="submit" value="ログイン"> 
+            <div id="text1"
+            <p>※ユーザー名：ご自身の苗字</p>
+            <p>※パスワード：席番（例１５番の方は０１５）</p>
+            </div>
+        </form>
+        </div>
+        </div>
     </body>
+    
+
 </html>
+

@@ -6,26 +6,35 @@
 
 <%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    // ユーザー情報をセッションから取得
+<%  
+    //ログインが失敗していれば、nullが値として取得される
     User loginUser = (User)session.getAttribute("loginUser");
-    %>
+%>
 <!DOCTYPE html>
 <html>
     <head>
+        <link href="style/login.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>どこつぶ</title>
     </head>
     <body>
-        <h1>どこつぶログイン画面</h1>
-        //セッション情報を判定して、成功失敗を判断
-    <% if (loginUser != null){   %>
-        <p>ログインに成功しました！</p>
-        <a href="Main"> つぶやき投稿・閲覧へ </a>
-        }
-    <% }else{%>
-        <p>ログインに失敗しました！</p>
-        <a href="index.jsp">トップへ戻る</a>    
-    <%}%>
+        <div id="container">
+        <div id="incontainer">
+        <h1>どこつぶログイン</h1>
+        <% if(loginUser != null){ %>
+            <p>ログインに成功しました</p>
+            <p><%= loginUser.getName() %>さん</p>
+            
+            
+            <a href="Main">つぶやき投稿・閲覧へ</a><br>
+            
+
+            
+        <% }else{ %>
+            <p>ログインに失敗しました</p>
+            <a href="index.jsp">TOPへ</a>
+        <% } %>
+        </div>
+        </div>
     </body>
 </html>

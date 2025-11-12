@@ -17,16 +17,15 @@ import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import model.Mutter;
-import model.PostMutterLogic;
 import model.User;
-import java.util.UUID;
+import model.PostMutterLogic;
 
 /**
  *
- * @author teacher
+ * @author abi06
  */
 @WebServlet(name = "Main", urlPatterns = {"/Main"})
-public class Main extends HttpServlet {
+public class Mainwatanabe extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -66,23 +65,13 @@ public class Main extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        
-        //つぶやき閲覧機能のために、（データベースの代わりとして）
-        //アプリケーションスコープで「つぶやきリスト」インスタンスを扱う
-        
-        //ログイン前にこの処理は行うべき（ログインより前に、初回のつぶやきリスト生成は終えておくべき、ログイン時にこのチェックをする必要がない）
+        //アプリケーションスコープのつぶやきリストを取得して、後ろのリストが空かどうかの処理に使う
         ServletContext application = this.getServletContext();
-        //アプリケーションスコープから「つぶやきリスト」を取り出す
-        List<Mutter> mutterList = 
-                (List<Mutter>)application.getAttribute("mutterList");
-        
-        //「つぶやきリスト」を取得できなかった場合
-        //（サーバ起動後の1回目の実行時のみ）
-        if(mutterList == null){
-            //「つぶやきリスト」を生成して、アプリケーションスコープに保存
+        List<Mutter> mutterList = (List<Mutter>)application.getAttribute("mutterList");
+        //リストが無かった場合には、新規作成してアプリケーションスコープへsetAttributeする作業を行う（初期化？）
+        if (mutterList == null){
             mutterList = new ArrayList<>();
-                        // ★★★ テストデータを１２こ作成し、リストに追加 ★★★
+            // ★★★ テストデータを１２こ作成し、リストに追加 ★★★
             Mutter mutter1 = new Mutter(1,"奥本", "データ１、つぶやきアプリへようこそ！",0);
             Mutter mutter2 = new Mutter(2,"奥本", "データ2、このアプリの動作確認中だよ。",5);
             Mutter mutter3 = new Mutter(3,"奥本", "データ3、離職者によるさこだ車両の不正内部告発",7);
@@ -109,22 +98,21 @@ public class Main extends HttpServlet {
             mutterList.add(mutter2);
             mutterList.add(mutter1); 
             // ★★★ テストデータ追加完了 ★★★
-            application.setAttribute("mutterList", mutterList);
+            
+            application.setAttribute("mutterList",mutterList);
         }
-        
-        //このアプリではセッションスコープから”loginUser”の名前で
-        //インスタンスを取り出すことができればログインしていると定義している
+        //ログインしているかどうかを確認するために、セッションスコープからユーザー情報を取得
+        //現状は、Mainを直打ちしてもMainサーブレットに入れてしまうから、この確認は必須
         HttpSession session = request.getSession();
         User loginUser = (User)session.getAttribute("loginUser");
         
-        if(loginUser == null){
-            //ログインしていない、場合、TOP画面へリダイレクト
-            response.sendRedirect("index.jsp");
+        //ログインしていたらフォワード、ログインしていなかったらトップへリダイレクト
+        if (loginUser != null){               
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher("WEB-INF/jsp/mainpage.jsp");
+        dispatcher.forward(request, response);
         }else{
-            //ログインしている、場合、メイン画面へフォワード
-            RequestDispatcher dispatcher =
-                    request.getRequestDispatcher("WEB-INF/jsp/main.jsp");
-            dispatcher.forward(request, response);
+            response.sendRedirect("index.jsp");
         }
     }
 
@@ -139,67 +127,30 @@ public class Main extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        
-        
-        //フォームに入力された投稿内容を
-        //リクエストパラメータから取り出す
+        //POSTからtextを取得
         request.setCharacterEncoding("UTF-8");
         String text = request.getParameter("text");
-        
-        //投稿内容のチェック
-        if(text != null && text.length()!= 0){
-            //何かしら文字が入力されている場合（空欄でない場合）
-            //「つぶやきリスト」をアプリケーションスコープを取り出す
+        //textがnullまたは空白でないなら処理を行う
+        if (text != null && text.length() != 0){
+            //ログインユーザー情報をセッションから取得し、userNameを取得
+            HttpSession session = request.getSession();
+            User loginUser = (User) session.getAttribute("loginUser");
+            String userName = loginUser.getName();
+            //つぶやきリストをアプリケーションから取得
             ServletContext application = this.getServletContext();
-            List<Mutter> mutterList = 
-                (List<Mutter>)application.getAttribute("mutterList");
-            
-            //「ログインしているユーザー情報」をセッションスコープから取り出す
-            HttpSession session = request.getSession();
-            User loginUser = (User)session.getAttribute("loginUser");
-            
-            
-            // --- ここでUUIDを生成 ---
-        // UUID.randomUUID() はUUID v4 (ランダムベース) を生成します。
-        UUID newUuid = UUID.randomUUID();
-        // UUIDオブジェクトをString型に変換
-        String mutterId = newUuid.toString();
-        // Tweetインスタンスを作成し、IDを格納
-        //Tweet newTweet = new Tweet(input_text, tweetIdStr);
-        
-            List<Mutter> sessionMutterList = (List<Mutter>) session.getAttribute("sessionMutterList");
-                if (sessionMutterList == null) {
-                    sessionMutterList = new ArrayList<>();
-                }
-            //「ユーザー名」と「投稿内容」で「つぶやき」インスタンスを生成し、
-            //セッションスコープ保存用リストsessionMutterListに格納する                
-            Mutter mutter = new Mutter(loginUser.getName(), text, mutterId);
-            sessionMutterList.add(mutter);
-            session.setAttribute("sessionMutterList", sessionMutterList);
-            //////過去バージョン///////////////////////////////////////////
-            //今はokumotoセッションに保存してフォワードした後、Addlistがつぶやきを追加する
-//            //「つぶやきリスト」に新しい「つぶやき」を追加する
-//            PostMutterLogic postMutterLogic = new PostMutterLogic();
-//            postMutterLogic.execute(mutter, mutterList);
-//            
-//            //アプリケーションスコープへ「つぶやきリスト」を保存
-//            application.setAttribute("mutterList", mutterList);
-/////////////////////////////////////////////////////////////////
+            List<Mutter> mutterList = (List<Mutter>)application.getAttribute("mutterList");
+            //リストに追加する要素を構成
+            Mutter mutter = new Mutter(userName,text);        
+            //リストに追加する部分はPostMutterLogicのexecuteメソッドに処理させる
+            PostMutterLogic postMutterLogic = new PostMutterLogic();
+            postMutterLogic.execute(mutter,mutterList);
         }else{
-            //投稿内容が空欄の場合、リクエストスコープにエラーメッセージを保存して送信
-            //セッションを破棄しないといけない
-            HttpSession session = request.getSession();
-            session.removeAttribute("sessionMutterList");
-            request.setAttribute("errorMsg","つぶやきが入力されていません");
-            RequestDispatcher dispatcher =
-                    request.getRequestDispatcher("/Main");
-            dispatcher.forward(request, response);            
+            //テキストなしのエラーメッセージをリクエストスコープに保存する
+            request.setAttribute("errorMsg", "つぶやきが入力されていません");
         }
-        
-        //mainでなくAddListにフォワード
+        //mainpageにフォワードする
         RequestDispatcher dispatcher =
-                request.getRequestDispatcher("/AddList");
+                request.getRequestDispatcher("WEB-INF/jsp/mainpage.jsp");
         dispatcher.forward(request, response);
     }
 

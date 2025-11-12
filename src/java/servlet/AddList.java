@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,18 +9,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.ServletContext;
 import java.util.List;
-import model.Mutter;
+import java.util.ArrayList; 
+// Mutterクラスはmodelパッケージにあると仮定してインポートします。
+import model.Mutter; 
 
 /**
- *
- * @author abi06
+ * ユーザーのセッションリストをアプリケーションスコープのリストに反映させるServlet
  */
 @WebServlet(name = "AddList", urlPatterns = {"/AddList"})
 public class AddList extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * doGet/doPostの共通処理として、セッションのつぶやきをアプリケーションスコープに移動し、
+     * メイン画面へリダイレクトします。
+     * 以前のdoGetのロジックをここに移動し、doGet/doPostから呼び出します。
      *
      * @param request servlet request
      * @param response servlet response
@@ -34,86 +31,79 @@ public class AddList extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AddList</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AddList at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        
+        // ユーザーのセッションを取得
+        HttpSession session = request.getSession();
+        
+        // 1. セッションデータからsessionMutterListを取得
+        // @SuppressWarnings("unchecked") は、型安全ではないキャストを許可するアノテーションです。
+        @SuppressWarnings("unchecked")
+        List<Mutter> sessionMutterList = (List<Mutter>) session.getAttribute("sessionMutterList");
+        
+        // セッションリストがnullまたは空の場合は、単にメイン画面へリダイレクトして終了
+        if (sessionMutterList == null || sessionMutterList.isEmpty()) {
+            response.sendRedirect("/Main"); 
+            return;
         }
+        
+        // データ保存用に、アプリケーションスコープを取得
+        ServletContext application = this.getServletContext();
+        
+        // 2. Applicationスコープの該当リストを取得
+        @SuppressWarnings("unchecked")
+        List<Mutter> applicationMutterList = (List<Mutter>) application.getAttribute("mutterList");
+        
+        // ⚠️ NullPointerException回避のための必須チェック
+        // applicationMutterList (mutterList) は、MainServletなどで必ず初期化されている必要があります。
+        if (applicationMutterList != null) {
+            
+            // 3. sessionMutterListの全ての要素をApplicationスコープのリストに取り込む
+            applicationMutterList.addAll(sessionMutterList);
+
+            // 4. アプリケーションスコープへの移動が完了したら、sessionデータを削除
+            session.removeAttribute("sessionMutterList");
+            
+        } else {
+             // 初期化漏れを開発者に通知
+             System.err.println("Error: applicationMutterList (mutterList) is null. Please ensure it is initialized in Main Servlet or a ServletContextListener.");
+        }
+        
+        // 5. mainにリダイレクト
+        // ContextPathを取得
+        final String contextPath = request.getContextPath();
+
+        // 修正されたリダイレクト: ContextPathを付加
+        response.sendRedirect(contextPath + "/Main");
+        //response.sendRedirect("/Main");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-@Override
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Addlistで送られてきたセッションの内容をアプリケーションリストに反映させて、sessionのattributeを削除し、Mainに変えす
-        // ユーザーのセッションを取得
-        HttpSession session = request.getSession();
-        
-        // 1. セッションデータからsessionMutterListを取得
-        // (ログインユーザー情報も確認しておくと安全です)
-        List<Mutter> sessionMutterList = (List<Mutter>) session.getAttribute("sessionMutterList");
-        
-        // セッションリストがnullまたは空の場合は何もしない
-        if (sessionMutterList == null || sessionMutterList.isEmpty()) {
-            response.sendRedirect("Main"); // Mainサーブレットへリダイレクト
-            return;
-        }
-        // アプリケーションスコープを取得
-        ServletContext application = this.getServletContext();
-        
-        // 2. Applicationスコープの該当リストを取得 (Mainサーブレットで初期化されていると仮定)
-        // 例: 全ユーザーで共有するリスト
-        List<Mutter> applicationMutterList = (List<Mutter>) application.getAttribute("mutterList");
-        
-        
-        // 3. sessionMutterListを空になるまで全てApplicationスコープのリストに取り込む
-        applicationMutterList.addAll(sessionMutterList);
-
-        // 4. 空になったらsessionデータから"sessionMutterList"項目を削除
-        session.removeAttribute("sessionMutterList");
-        
-        // 5. mainにリダイレクト
-        response.sendRedirect("Main");
+        // ロジックをprocessRequestに移動したので、ここから呼び出す
+        processRequest(request, response);
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // ロジックをprocessRequestに移動したので、ここから呼び出す
         processRequest(request, response);
     }
 
     /**
      * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Transfers session data to application scope list";
     }// </editor-fold>
 
 }

@@ -62,10 +62,7 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher =
-                request.getRequestDispatcher("WEB-INF/jsp/loginForm.jsp");
-        dispatcher.forward(request, response);
-
+       // processRequest(request, response);
     }
 
     /**
@@ -79,26 +76,39 @@ public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //リクエストパラメータの取得
+        //processRequest(request, response);
+        
+        //フォームで入力された値を取得（リクエストパラメータを取得）
         request.setCharacterEncoding("UTF-8");
         String name = request.getParameter("name");
         String pass = request.getParameter("pass");
-        //USERインスタンス（ユーザー情報）の生成
-        User user = new User(name,pass);
-        //ログイン処理
+        int userId = 0;
+//        int userId = Integer.parseInt(request.getParameter("pass"));
+        
+        
+        //取得した値で、Userインスタンスを生成
+        User user = new User(name, pass, userId);
+        
+        //ログインの判定処理インスタンスを生成
         LoginLogic loginLogic = new LoginLogic();
-          //メソッドのリターンをboolean型で格納
-        boolean isLogin = loginLogic.execute(user);        
+        //ログインの判定処理を実行
+        int isLogin = loginLogic.execute(user);
+//        boolean isLogin = loginLogic.execute(user);
+        
         //ログイン成功時の処理
-        if(isLogin){
-          //ユーザー情報をセッションスコープに保存
-          HttpSession session = request.getSession();
-          session.setAttribute("loginUser", user);
-          //ログイン結果画面にフォワード
-          RequestDispatcher dispatcher =
-            request.getRequestDispatcher("WEB-INF/jsp/loginResult.jsp");
-          dispatcher.forward(request, response);
+//        if(isLogin){
+          if(isLogin>0){
+            user.userId=isLogin;
+            //ログインしたユーザー情報をセッションスコープに保存
+            HttpSession session = request.getSession();
+            session.setAttribute("loginUser",user);
         }
+        
+        //ログイン結果画面のＪＳＰへフォワードする
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher
+                ("WEB-INF/jsp/loginResult.jsp");
+        dispatcher.forward(request, response);
     }
 
     /**
