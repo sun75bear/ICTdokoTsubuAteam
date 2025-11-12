@@ -49,7 +49,6 @@
 <body>
     <h1>投稿の編集</h1>
     <div class="form-box">
-        <!--TODO UpdateMutterのリファクタリング-->
         <form action="UpdateMutter" method="post">
             <input type="hidden" name="mutterId" value="<%= editMutter.getMutterId() %>">
             <input type="text" name="text" value="<%= editMutter.getText() %>">

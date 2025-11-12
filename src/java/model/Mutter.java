@@ -65,7 +65,12 @@ public class Mutter implements Serializable{
     public String getText() {
         return text;
     }
+    //Mutterインスタンスのtext編集用にセッターメソッドを追加
+    public void setText(String text) {
+        this.text =text;
+    }
 
+    
     public int getGood() {
         return good;
     }
