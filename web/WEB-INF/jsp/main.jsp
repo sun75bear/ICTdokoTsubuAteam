@@ -28,7 +28,7 @@
         </p>
         <p><a href="Main">更新</a></p>
         <a href="Display">検索閲覧</a> <br>
-        ///eharaリンクを追加する
+        <a href="MyPage">マイページ</a> <br>
         <form action="Main" method="post">
             <input type="text" name="text">
             <input type="submit" value="つぶやく">
@@ -38,7 +38,7 @@
         <P><%= errorMsg %></p>
         <% } %>
         <% for(Mutter mutter : mutterList) {%>
-            <p><%= mutter.getUsername() %>：<%= mutter.getText() %>:<%= mutter.getmutterId() %></p>
+            <p><%= mutter.getUsername() %>：<%= mutter.getText() %>:<%= mutter.getMutterId() %></p>
         <% } %>
         </div>
         </div>

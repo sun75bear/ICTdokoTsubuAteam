@@ -49,6 +49,14 @@ public class Mutter implements Serializable{
         this.good = good;
         this.bad = 0;
     }
+    //テスト用、mutterIDに対応
+    public Mutter(String mutterId,String username,String text,int good){
+        this.mutterId = mutterId;
+        this.username = username;
+        this.text = text;
+        this.good = good;
+        this.bad = 0;
+    }
 
     public String getUsername() {
         return username;
@@ -69,7 +77,7 @@ public class Mutter implements Serializable{
     public int getId() {
         return id;
     }
-    public String getmutterId() {
+    public String getMutterId() {
         return mutterId;
     }
 }

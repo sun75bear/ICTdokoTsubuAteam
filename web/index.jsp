@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="style/login.css" rel="stylesheet">
+        <link href="css/login.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>どこつぶ</title>
     </head>

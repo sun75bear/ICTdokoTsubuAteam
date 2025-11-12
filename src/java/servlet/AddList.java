@@ -69,7 +69,7 @@ public class AddList extends HttpServlet {
         }
         
         // 5. mainにリダイレクト
-        // ContextPathを取得
+        // サーブレット上から呼ぶと、/Mainとやるだけではうまくいかない、予めContextPathを取得しておく
         final String contextPath = request.getContextPath();
 
         // 修正されたリダイレクト: ContextPathを付加
