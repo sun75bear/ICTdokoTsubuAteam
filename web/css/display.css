@@ -1,0 +1,83 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : 2025/11/11, 9:07:00
+    Author     : abi02
+*/
+/* 背景と全体設定 */
+h1 {
+    font-size: 48px;   /* お好みでサイズ変更可能 */
+    font-weight: bold;  /* 太字にする */
+    color: gold;        /* 白文字にする場合 */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* 背景に影をつけて見やすく */
+    margin-bottom: 30px; /* 下に余白 */
+}
+body {
+    background-image: url('/dokoTsubu_GroupA_test/images/db09bcb2bba0731b97951f53929c27b89fce3595_xlarge.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    text-align: center; /* ボタン中央揃え */
+    font-family: Arial, sans-serif;
+}
+/* ボタン */
+form button {
+    display: block;
+    width: 300px;
+    margin: 15px auto;
+    padding: 12px;
+    font-size: 34px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(45deg, #ff7f50, #ff4500);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+/* ボタンホバー時 */
+form button:hover {
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    background: linear-gradient(45deg, #ff6347, #ff1493);
+}
+/* リンク */
+a {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #fff;
+    padding: 8px 16px;
+    background-color: #007acc;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+a:hover {
+    background-color: #005f99;
+}
+.visit-count {
+    font-size: 48px;
+    color: red;
+}
+.akuiaru {
+    font-size: 24px;
+    color: red;
+}
+.akui-button {
+    width: 600px;         /* 横幅を広げる（お好みの値に変更） */
+    height: 140px;         /* 高さも調整可能 */
+    font-size: 20px;      /* 文字を大きく */
+    background-color: #ffcc00; /* 色（任意） */
+    border: none;         /* 枠線を消す */
+    border-radius: 10px;  /* 角を丸く */
+    cursor: pointer;      /* マウスを手アイコンに */
+    transition: 0.3s;     /* ホバー時のアニメーション */
+}
+.akui-button:hover {
+    background-color: black; /* ホバー時の色変化 */
+}
