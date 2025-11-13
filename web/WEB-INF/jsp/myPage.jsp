@@ -39,7 +39,9 @@
         </div>
         
         <div class="mutter-list">
-    <% for(Mutter mutter : mutterList){ %>
+        <% for(Mutter mutter : mutterList){
+               if(mutter.getUsername().equals(loginUser.getName())) {
+        %>
         <div class="mutter-card">
         <div class="mutter-header">
         <strong class="mutter-username"><%= mutter.getUsername() %></strong>
@@ -68,7 +70,7 @@
         </div>
                     
                     
-    <% } %>
+    <% }} %>
 </div>
 
         <!-- ★ ここに追加！ -->
