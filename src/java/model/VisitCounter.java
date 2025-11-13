@@ -56,10 +56,10 @@ public class VisitCounter {
             totalVisits = Integer.parseInt(line);
           }
         } catch (IOException | NumberFormatException e) {
-          totalVisits = 776;
+          totalVisits = 774;
         }
       } else {
-        totalVisits = 776;
+        totalVisits = 774;
       }
     }
     

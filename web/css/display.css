@@ -6,24 +6,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     Created on : 2025/11/11, 9:07:00
     Author     : abi02
 */
-/* ”wŒi‚Æ‘S‘Ìİ’è */
+/* èƒŒæ™¯ã¨å…¨ä½“è¨­å®š */
 h1 {
-    font-size: 48px;   /* ‚¨D‚İ‚ÅƒTƒCƒY•ÏX‰Â”\ */
-    font-weight: bold;  /* ‘¾š‚É‚·‚é */
-    color: gold;        /* ”’•¶š‚É‚·‚éê‡ */
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* ”wŒi‚É‰e‚ğ‚Â‚¯‚ÄŒ©‚â‚·‚­ */
-    margin-bottom: 30px; /* ‰º‚É—]”’ */
+    font-size: 48px;   /* ãŠå¥½ã¿ã§ã‚µã‚¤ã‚ºå¤‰æ›´å¯èƒ½ */
+    font-weight: bold;  /* å¤ªå­—ã«ã™ã‚‹ */
+    color: gold;        /* ç™½æ–‡å­—ã«ã™ã‚‹å ´åˆ */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* èƒŒæ™¯ã«å½±ã‚’ã¤ã‘ã¦è¦‹ã‚„ã™ã */
+    margin-bottom: 30px; /* ä¸‹ã«ä½™ç™½ */
 }
 body {
-    background-image: url('/dokoTsubu_GroupA_test/images/db09bcb2bba0731b97951f53929c27b89fce3595_xlarge.jpg');
+    background-image: url('../images/coolcar.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    text-align: center; /* ƒ{ƒ^ƒ“’†‰›‘µ‚¦ */
+    text-align: center; /* ãƒœã‚¿ãƒ³ä¸­å¤®æƒãˆ */
     font-family: Arial, sans-serif;
 }
-/* ƒ{ƒ^ƒ“ */
+/* ãƒœã‚¿ãƒ³ */
 form button {
     display: block;
     width: 300px;
@@ -39,13 +39,13 @@ form button {
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     transition: all 0.3s ease;
 }
-/* ƒ{ƒ^ƒ“ƒzƒo[ */
+/* ãƒœã‚¿ãƒ³ãƒ›ãƒãƒ¼æ™‚ */
 form button:hover {
     transform: scale(1.1) rotate(-5deg);
     box-shadow: 0 10px 25px rgba(0,0,0,0.5);
     background: linear-gradient(45deg, #ff6347, #ff1493);
 }
-/* ƒŠƒ“ƒN */
+/* ãƒªãƒ³ã‚¯ */
 a {
     display: inline-block;
     margin-top: 20px;
@@ -69,15 +69,15 @@ a:hover {
     color: red;
 }
 .akui-button {
-    width: 600px;         /* ‰¡•‚ğL‚°‚éi‚¨D‚İ‚Ì’l‚É•ÏXj */
-    height: 140px;         /* ‚‚³‚à’²®‰Â”\ */
-    font-size: 20px;      /* •¶š‚ğ‘å‚«‚­ */
-    background-color: #ffcc00; /* Fi”CˆÓj */
-    border: none;         /* ˜gü‚ğÁ‚· */
-    border-radius: 10px;  /* Šp‚ğŠÛ‚­ */
-    cursor: pointer;      /* ƒ}ƒEƒX‚ğèƒAƒCƒRƒ“‚É */
-    transition: 0.3s;     /* ƒzƒo[‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ */
+    width: 600px;         /* æ¨ªå¹…ã‚’åºƒã’ã‚‹ï¼ˆãŠå¥½ã¿ã®å€¤ã«å¤‰æ›´ï¼‰ */
+    height: 140px;         /* é«˜ã•ã‚‚èª¿æ•´å¯èƒ½ */
+    font-size: 20px;      /* æ–‡å­—ã‚’å¤§ãã */
+    background-color: #ffcc00; /* è‰²ï¼ˆä»»æ„ï¼‰ */
+    border: none;         /* æ ç·šã‚’æ¶ˆã™ */
+    border-radius: 10px;  /* è§’ã‚’ä¸¸ã */
+    cursor: pointer;      /* ãƒã‚¦ã‚¹ã‚’æ‰‹ã‚¢ã‚¤ã‚³ãƒ³ã« */
+    transition: 0.3s;     /* ãƒ›ãƒãƒ¼æ™‚ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ */
 }
 .akui-button:hover {
-    background-color: black; /* ƒzƒo[‚ÌF•Ï‰» */
+    background-color: black; /* ãƒ›ãƒãƒ¼æ™‚ã®è‰²å¤‰åŒ– */
 }
