@@ -1,56 +1,55 @@
-<%-- 
-    Document   : result
-    Created on : 2025/11/10, 14:28:01
-    Author     : abi03
---%>
-
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@page import="java.util.*"%>
+<%@page import="java.util.*, model.SearchHit"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>検索結果</title>
-  <style>
-    body{margin:0;padding:0;height:100vh;background:#f4f4f8;
-         font-family:system-ui,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;display:flex;align-items:center;justify-content:center}
-    .card{width:520px;max-width:92vw;background:#fff;border-radius:16px;box-shadow:0 8px 18px rgba(0,0,0,.12);padding:28px 32px;animation:fade .5s ease}
-    h1{margin:0 0 10px;font-size:1.4rem;color:#222}
-    .kw{color:#2d7ff9;font-weight:700}
-    ul{margin:14px 0 0 1.2rem;line-height:1.8}
-    a.btn{display:inline-block;margin-top:18px;text-decoration:none;background:#2d7ff9;color:#fff;padding:.6rem 1rem;border-radius:8px}
-    a.btn:hover{background:#1d6be2}
-    @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  </style>
+  <%-- 外部CSSファイルを読み込みます --%>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/textResult.css">
 </head>
 <body>
-  <div class="card">
-    <h1>検索結果</h1>
-    <% String kw = (String)request.getAttribute("keyword"); %>
-    <p>キーワード：<span class="kw"><%= (kw == null || kw.isBlank()) ? "（未入力）" : kw %></span></p>
+<div class="wrap">
+  <h1>検索結果：<span class="kw"><%= request.getAttribute("keyword") %></span></h1>
 
-    <%
-      List<String> results = (List<String>) request.getAttribute("results");
-      if (results == null || results.isEmpty()) {
-    %>
-        <p>該当する結果がありませんでした。</p>
-    <%
-      } else {
-    %>
-        <ul>
-        <%
-          for (String r : results) {
-        %>
-            <li><%= r %></li>
-        <%
-          }
-        %>
-        </ul>
-    <%
-      }
-    %>
+  <%
+    //requestスコープのhitsからテキスト検索の結果を引っ張ってくる、null or notnull
+    List<SearchHit> hits = (List<SearchHit>) request.getAttribute("hits");
+    if (hits == null || hits.isEmpty()) {
+  %>
+    <p class="empty">該当する投稿は見つかりませんでした。</p>
+    <p><a class="link" href="Keyword">← 検索画面に戻る</a></p>
+  <%
+    } else {
+  %>
+    <div class="grid">
+      <%
+        //requestスコープから取得した
+        String kw = (String) request.getAttribute("keyword");
+        for (SearchHit h : hits) {
+          // スニペット中のキーワードをハイライト（簡易）
+          //<mark>で修飾されたkwは蛍光ペンでハイライトしたような表示が入る
+          //処理した文字列snを、つぶやき本文として表示する
+          String sn = h.getSnippet().replace(kw, "<mark>" + kw + "</mark>");
+      %>
+        <div class="card">
+          <div class="meta"><strong><%= h.getName() %></strong> さん ／ <%= h.getCreatedAt() %> ／ No.<%= h.getPostId() %></div>
+          <div class="snippet"><%= sn %></div>
+<a class="link"
+  href="<%= request.getContextPath() %>/person?name=<%= java.net.URLEncoder.encode(h.getName(), "UTF-8") %>&q=<%= java.net.URLEncoder.encode(kw, "UTF-8") %>#post-<%= h.getPostId() %>">
+  個人ページで表示
+</a>
 
-    <p><a class="btn" href="<%= request.getContextPath() %>/index.jsp">← 検索に戻る</a></p>
-  </div>
+
+        </div>
+      <%
+        }
+      %>
+    </div>
+    <p style="margin-top:14px"><a class="link" href="keyword">← 検索に戻る</a></p>
+  <%
+    }
+  %>
+</div>
 </body>
 </html>

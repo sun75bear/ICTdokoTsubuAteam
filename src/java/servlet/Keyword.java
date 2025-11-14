@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author abi05
  */
-@WebServlet(name = "Keyword", urlPatterns = {"/Keyword"})
+@WebServlet(name = "keyword", urlPatterns = {"/keyword"})
 public class Keyword extends HttpServlet {
 
     /**
@@ -57,7 +57,7 @@ public class Keyword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/keyword.jsp").forward(request, response);
     }
 
     /**
