@@ -1,3 +1,4 @@
+<%@page import="model.Mutter"%>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*, model.Post"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -19,42 +20,38 @@
 
   <div class="list">
   <%
-    //nameでの検索結果を受けて抽出されたリストを表示している
-    //application対処であれば、nameをresponseスコープに格納してapplicationスコープから検索する？
-    //今回はボタンを押すと飛べるから、そこの対処と兼ね合いがある、検索対象であるテキストを載せられるようにするか、このまま抽出リストを使い続けるか
-    //段階を踏むから、抽出リスト方法で行った方がいい気がする
-    //いい値の問題を抜きにすれば、このページで編集などの操作を行う事がないから、applicationスコープにデータを保持し、格納操作する必要がないはず
-    List<Post> posts = (List<Post>) request.getAttribute("posts");
+    //personで抽出したnameHitリストをリクエストスコープから取得する
+    List<Mutter> nameHit = (List<Mutter>) request.getAttribute("nameHit");
     //PostがMutterだから、ここを全部Mutterに置き換える
-    if (posts == null || posts.isEmpty()) {
+    if (nameHit == null || nameHit.isEmpty()) {
   %>
       <div class="post"><div class="meta">投稿はありません。</div></div>
   <%
     } else {
-      for (Post p : posts) {
-        // ★ EL から参照できるように p をページ属性へ
-        pageContext.setAttribute("p", p);
+      for (Mutter mutter : nameHit) {
+        // ★ EL から参照できるように mutter をページ属性"p"へ
+        pageContext.setAttribute("p", mutter);
   %>
       <div class="post">
-        <div class="meta">No.<%= p.getId() %> ／ <%= p.getAuthor() %> さん ／ <%= p.getCreatedAt() %></div>
+        <div class="meta"> <%= mutter.getUsername() %> さん ／ No.<%= mutter.getMutterId() %>  <%//=mutter.getCreatedAt() %></div>
 
-        <div style="white-space: pre-wrap;"><c:out value="${p.content}"/></div>
+        <div style="white-space: pre-wrap;"><%= mutter.getText() %></div>
 
         <div class="actions" style="margin-top:8px">
           <form action="<%= request.getContextPath() %>/person" method="post">
             <input type="hidden" name="name" value="<%= request.getParameter("name") %>">
             <input type="hidden" name="action" value="react">
             <input type="hidden" name="type" value="like">
-            <input type="hidden" name="id" value="<%= p.getId() %>">
-            <button class="btn" type="submit">イイネ <span class="pill"><%= p.getLikes() %></span></button>
+            <input type="hidden" name="id" value="<%= mutter.getMutterId() %>">
+            <button class="btn" type="submit">イイネ <span class="pill"><%= mutter.getGood() %></span></button>
           </form>
           <form action="<%= request.getContextPath() %>/person" method="post">
             <input type="hidden" name="name" value="<%= request.getParameter("name") %>">
             <input type="hidden" name="action" value="react">
             <input type="hidden" name="type" value="bad">
-            <input type="hidden" name="id" value="<%= p.getId() %>">
+            <input type="hidden" name="id" value="<%= mutter.getMutterId() %>">
             <%-- style="background:#e45757" はインラインで残すか、CSSでボタンを分離する必要があります。今回はインラインで残します。 --%>
-            <button class="btn" type="submit" style="background:#e45757">バット <span class="pill"><%= p.getBads() %></span></button>
+            <button class="btn" type="submit" style="background:#e45757">バット <span class="pill"><%= mutter.getBad() %></span></button>
           </form>
         </div>
       </div>

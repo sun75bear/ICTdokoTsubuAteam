@@ -1,3 +1,4 @@
+<%@page import="model.Mutter"%>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@page import="java.util.*, model.SearchHit"%>
 <!DOCTYPE html>
@@ -14,8 +15,8 @@
 
   <%
     //requestスコープのhitsからテキスト検索の結果を引っ張ってくる、null or notnull
-    List<SearchHit> hits = (List<SearchHit>) request.getAttribute("hits");
-    if (hits == null || hits.isEmpty()) {
+    List<Mutter> textHit = (List<Mutter>) request.getAttribute("textHit");
+    if (textHit == null || textHit.isEmpty()) {
   %>
     <p class="empty">該当する投稿は見つかりませんでした。</p>
     <p><a class="link" href="Keyword">← 検索画面に戻る</a></p>
@@ -24,19 +25,19 @@
   %>
     <div class="grid">
       <%
-        //requestスコープから取得した
+        //requestスコープから取得したkeywordを利用する
         String kw = (String) request.getAttribute("keyword");
-        for (SearchHit h : hits) {
-          // スニペット中のキーワードをハイライト（簡易）
+        for (Mutter m : textHit) {
           //<mark>で修飾されたkwは蛍光ペンでハイライトしたような表示が入る
           //処理した文字列snを、つぶやき本文として表示する
-          String sn = h.getSnippet().replace(kw, "<mark>" + kw + "</mark>");
+          //処理不明で保留、mをそのまま用いる
+          //String sn = m.replace(kw, "<mark>" + kw + "</mark>");
       %>
         <div class="card">
-          <div class="meta"><strong><%= h.getName() %></strong> さん ／ <%= h.getCreatedAt() %> ／ No.<%= h.getPostId() %></div>
-          <div class="snippet"><%= sn %></div>
+          <div class="meta"><strong><%= m.getUsername() %></strong> さん ／ <%// m.getCreatedAt() %>  No.<%= m.getMutterId() %></div>
+          <div class="snippet"><%= m.getText() %></div>
 <a class="link"
-  href="<%= request.getContextPath() %>/person?name=<%= java.net.URLEncoder.encode(h.getName(), "UTF-8") %>&q=<%= java.net.URLEncoder.encode(kw, "UTF-8") %>#post-<%= h.getPostId() %>">
+  href="<%= request.getContextPath() %>/person?name=<%= java.net.URLEncoder.encode(m.getUsername(), "UTF-8") %>&q=<%= java.net.URLEncoder.encode(kw, "UTF-8") %>#post-<%= m.getMutterId() %>">
   個人ページで表示
 </a>
 
