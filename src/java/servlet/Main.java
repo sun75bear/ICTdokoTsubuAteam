@@ -67,22 +67,22 @@ public class Main extends HttpServlet {
             throws ServletException, IOException {
         //processRequest(request, response);
         
-        //つぶやき閲覧機能のために、（データベースの代わりとして）
-        //アプリケーションスコープで「つぶやきリスト」インスタンスを扱う
-        
-        //ログイン前にこの処理は行うべき（ログインより前に、初回のつぶやきリスト生成は終えておくべき、ログイン時にこのチェックをする必要がない）
-        ServletContext application = this.getServletContext();
-        //アプリケーションスコープから「つぶやきリスト」を取り出す
-        List<Mutter> mutterList = 
-                (List<Mutter>)application.getAttribute("mutterList");
-        
-        //「つぶやきリスト」を取得できなかった場合
-        //（サーバ起動後の1回目の実行時のみ）
-        if(mutterList == null){
-            //「つぶやきリスト」を生成して、アプリケーションスコープに保存
-            mutterList = new ArrayList<>();
-            application.setAttribute("mutterList", mutterList);
-        }
+//        //つぶやき閲覧機能のために、（データベースの代わりとして）
+//        //アプリケーションスコープで「つぶやきリスト」インスタンスを扱う、アプリ起動時に必ずロードするからここは不要
+//        
+//        //ログイン前にこの処理は行うべき（ログインより前に、初回のつぶやきリスト生成は終えておくべき、ログイン時にこのチェックをする必要がない）
+//        ServletContext application = this.getServletContext();
+//        //アプリケーションスコープから「つぶやきリスト」を取り出す
+//        List<Mutter> mutterList = 
+//                (List<Mutter>)application.getAttribute("mutterList");
+//        
+//        //「つぶやきリスト」を取得できなかった場合
+//        //（サーバ起動後の1回目の実行時のみ）
+//        if(mutterList == null){
+//            //「つぶやきリスト」を生成して、アプリケーションスコープに保存
+//            mutterList = new ArrayList<>();
+//            application.setAttribute("mutterList", mutterList);
+//        }
         
         //このアプリではセッションスコープから”loginUser”の名前で
         //インスタンスを取り出すことができればログインしていると定義している
@@ -122,8 +122,9 @@ public class Main extends HttpServlet {
         HttpSession session = request.getSession();        
         
         //投稿内容のチェック
-         //何かしら文字が入力されている場合（空欄でない場合）
-        if(text != null && text.length()!= 0){
+         //何かしら文字が入力されている場合（空欄でない場合）処理が進む
+        //isBlank()メソッドで聞くことにした、text.length()!=0は、空白文字がすり抜けてしまう
+        if(text != null && !text.isBlank()){
             //セッションからloginUserインスタンスを取得
             User loginUser = (User)session.getAttribute("loginUser");           
             // --- ここでUUIDを生成 ---
@@ -146,9 +147,11 @@ public class Main extends HttpServlet {
             dispatcher.forward(request, response);
         }else{
             //投稿内容が空欄の場合、リクエストスコープにエラーメッセージを保存して送信
+            ///MainでdoGetサーブレットを用いようとすると、おそらくdoPostが働い手無限ループになる
+            //絶対パスでmain.jspをforward先に指定する
             request.setAttribute("errorMsg","つぶやきが入力されていません");
             RequestDispatcher dispatcher =
-                    request.getRequestDispatcher("/Main");
+                    request.getRequestDispatcher("WEB-INF/jsp/main.jsp");
             dispatcher.forward(request, response);            
         }        
     }
