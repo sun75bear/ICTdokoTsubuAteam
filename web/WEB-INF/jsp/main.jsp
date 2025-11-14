@@ -17,6 +17,7 @@
     <head>
         <link href="style/login.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/myPage.css">  
         <title>どこつぶ</title>
     </head>
     <body>
@@ -42,5 +43,25 @@
         <% } %>
         </div>
         </div>
+<!-- koko5 -->
+        <!-- 上に戻るボタン -->
+        <button id="backToTop">↑</button>
+        
+        <script>
+        // スクロールイベントでボタン表示切り替え
+        window.addEventListener("scroll", function() {
+        const button = document.getElementById("backToTop");
+        if (window.scrollY > 300) { // 300px以上スクロールしたら表示
+            button.style.display = "block";
+        } else {
+            button.style.display = "none";
+        }
+    });
+
+        // ボタンクリックでトップへスムーズスクロール
+        document.getElementById("backToTop").addEventListener("click", function() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+</script>        
     </body>
 </html>

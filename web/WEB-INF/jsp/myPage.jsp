@@ -79,7 +79,28 @@
         <input type="submit" value="メインページに戻る">
     </form>
 </div>
+<!-- koko5 -->
+        <!-- 上に戻るボタン -->
+        <button id="backToTop">↑</button>
+        
+        <script>
+        // スクロールイベントでボタン表示切り替え
+        window.addEventListener("scroll", function() {
+        const button = document.getElementById("backToTop");
+        if (window.scrollY > 300) { // 300px以上スクロールしたら表示
+            button.style.display = "block";
+        } else {
+            button.style.display = "none";
+        }
+    });
 
+        // ボタンクリックでトップへスムーズスクロール
+        document.getElementById("backToTop").addEventListener("click", function() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+</script>  
+        
+        
 
     </body>
 </html>
