@@ -63,14 +63,14 @@
 
             <!-- いいねボタン -->
             <form action="GoodBadServlet" method="post" style="display:inline;">
-                <input type="hidden" name="mutterId" value="<%= mutter.getId() %>">
+                <input type="hidden" name="mutterId" value="<%= mutter.getMutterId() %>">
                 <input type="hidden" name="action" value="good">
                 <button type="submit" class="reaction-button good-button">👍 いいね</button>
             </form>
 
             <!-- バッドボタン -->
             <form action="GoodBadServlet" method="post" style="display:inline;">
-                <input type="hidden" name="mutterId" value="<%= mutter.getId() %>">
+                <input type="hidden" name="mutterId" value="<%= mutter.getMutterId() %>">
                 <input type="hidden" name="action" value="bad">
                 <button type="submit" class="reaction-button bad-button">👎 バッド</button>
             </form>

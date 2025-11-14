@@ -11,7 +11,6 @@ import java.io.Serializable;
  * @author abi06
  */
 public class Mutter implements Serializable{
-    private int id;
     private String mutterId;
     private String username;
     private String text;
@@ -19,37 +18,16 @@ public class Mutter implements Serializable{
     private int bad;
     
     public Mutter(){}
-    public Mutter(String username,String text){
-        //後々、IDをmutterIDに変えるべき
-        this.id = 0;
-        this.username = username;
-        this.text = text;
-        this.good = 0;
-        this.bad = 0;
-    }
-    //abi04、mutterIdで保存、統合が終わったら以後それを使う
+    //name,text,mutterIdでpostされたつぶやきを作成してAddListする操作に使われている
         public Mutter(String username, String text, String mutterId) {
         this.username = username;
         this.text = text;
         this.mutterId = mutterId;
+        this.good = 0;
+        this.bad = 0;
     }
     
-    //テスト用、コンストラクタのidいいね引数は廃止して、JAVABEANS準拠にする事
-    public Mutter(String username,String text,int good){
-        this.id = 0;
-        this.username = username;
-        this.text = text;
-        this.good = good;
-        this.bad = 0;
-    }
-    public Mutter(int id,String username,String text,int good){
-        this.id = id;
-        this.username = username;
-        this.text = text;
-        this.good = good;
-        this.bad = 0;
-    }
-    //テスト用、mutterIDに対応
+    //初期値作成用、mutterIDに対応
     public Mutter(String mutterId,String username,String text,int good){
         this.mutterId = mutterId;
         this.username = username;
@@ -78,10 +56,7 @@ public class Mutter implements Serializable{
     public int getBad() {
         return bad;
     }
-
-    public int getId() {
-        return id;
-    }
+    
     public String getMutterId() {
         return mutterId;
     }
