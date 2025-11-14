@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import model.Mutter;
 
 import model.Post;
-import store.InMemoryDB;
 
 @WebServlet("/person")
 public class PersonServlet extends HttpServlet {
