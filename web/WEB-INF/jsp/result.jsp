@@ -7,7 +7,7 @@
   <meta charset="UTF-8">
   <title>検索結果</title>
   <%-- 外部CSSファイルを読み込みます --%>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/textResult.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/result.css">
 </head>
 <body>
 <div class="wrap">

@@ -8,7 +8,7 @@
   <meta charset="UTF-8">
   <title>個人ページ</title>
   <%-- 外部CSSファイルを読み込みます --%>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/personResult.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/person.css">
 </head>
 <body>
 <div class="wrap">
@@ -59,6 +59,7 @@
       } // for
     }   // else
   %>
+      <p style="margin-top:14px"><a class="link" href="keyword">← 検索に戻る</a></p>
   </div>
 
 </div>
