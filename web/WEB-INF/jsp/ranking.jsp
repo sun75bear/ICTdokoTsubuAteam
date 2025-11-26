@@ -7,13 +7,9 @@
 <%@page import="model.User"%>
 <%@page import="model.Mutter"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.*, model.UserRanking" %>
+<%@ page import="java.util.*"%>
 
 <%
-    //List<UserRanking> rankingList = (List<UserRanking>) request.getAttribute("rankingList");
-    //if (rankingList == null) {
-     //   rankingList = new ArrayList<>();
-    //}
     User loginUser = (User)session.getAttribute("loginUser");
     List<Mutter> rankingList = (List<Mutter>)application.getAttribute("mutterList");
     String errorMsg = (String)request.getAttribute("errorMsg");
@@ -89,8 +85,8 @@
             <div class="rank"><%= iconHtml %> 第<%= rank %>位</div>
             <div class="username">👤 <%= mutter.getUsername() %></div>
             <div class="likes">
-                <button onclick="sendLike(<%= rank %>)">👍</button>
-                <span id="likes-<%= rank %>"><%= mutter.getGood() %></span> いいね                
+                <button onclick="sendLike('<%= mutter.getMutterId() %>')">👍</button>
+                <span id="likes-<%= mutter.getMutterId() %>"><%= mutter.getGood() %></span> いいね                
             </div>
             <div class="content">📝 <%= mutter.getText() %></div>
         </div>
