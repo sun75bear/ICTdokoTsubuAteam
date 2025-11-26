@@ -13,7 +13,6 @@ import java.util.Optional;
 import java.util.ArrayList;
 import model.Mutter;
 
-import model.Post;
 
 @WebServlet("/person")
 public class PersonServlet extends HttpServlet {

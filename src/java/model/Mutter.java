@@ -52,6 +52,10 @@ public class Mutter implements Serializable{
     public int getGood() {
         return good;
     }
+    //いいねでgoodを増やす操作に利用
+    public void setGood(int good) {
+        this.good = good;
+    }
 
     public int getBad() {
         return bad;
