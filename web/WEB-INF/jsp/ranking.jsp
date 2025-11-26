@@ -17,11 +17,31 @@
     User loginUser = (User)session.getAttribute("loginUser");
     List<Mutter> rankingList = (List<Mutter>)application.getAttribute("mutterList");
     String errorMsg = (String)request.getAttribute("errorMsg");
+    //アプリケーションスコープのリストをコピーして、いい値が多い順に並べなおしたリストsortedRankingListを作る
+    //sortedRankingListの１・２・３番目を１位２位３位として表示、その後についてもrankingListを順番に表示させる
+    
+    // Listをコピーしてソートする（元のapplicationスコープのリストを変更しないため）
+    List<Mutter> sortedRankingList = new ArrayList<>(rankingList);
+    
+    if (rankingList != null) {
+
+        // Comparatorを使用して、getGood()の値が大きい順（降順）にソート
+        Collections.sort(sortedRankingList, new Comparator<Mutter>() {
+            @Override
+            public int compare(Mutter m1, Mutter m2) {
+                // 降順ソート: m2 (次の要素) の方が m1 (前の要素) より大きければ (いいねが多ければ) 正の値
+                return m2.getGood() - m1.getGood();
+            }
+        });        
+    } else {
+        // rankingListリストがnullの場合に備えて空のリストをセット
+        sortedRankingList = new ArrayList<>();
+    }
+    // ----------------------------------------------------
 %>
 
 <html>
 <head>
-    //TODO　いいねをinMemoryDBに頼っている、今は使わないから、現状いいねは機能していない
     <title>投稿ランキング</title>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/css/ranking.css">
@@ -41,14 +61,14 @@
             <button type="submit" class="back-button">← 一覧へ戻る</button>
         </form>
     </div>
-    
     <div class="card-container">
     <%
     int rank = 1;
     System.out.println("int");
-//    for (UserRanking user : rankingList) {
+    //    for (UserRanking user : sortRankingList) {
     //UserRankin usreは、Mutter utterのこと
-    for (Mutter mutter : rankingList){
+    //sortedRankingListを順番に表示する
+    for (Mutter mutter : sortedRankingList){
         System.out.println("for");
         String rankClass = "";
         String iconHtml = "";
