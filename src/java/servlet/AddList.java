@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.ArrayList; 
 // Mutterクラスはmodelパッケージにあると仮定してインポートします。
 import model.Mutter; 
+import model.PostMutterLogic;
 
 /**
  * ユーザーのセッションリストをアプリケーションスコープのリストに反映させるServlet
@@ -53,16 +54,22 @@ public class AddList extends HttpServlet {
         @SuppressWarnings("unchecked")
         List<Mutter> applicationMutterList = (List<Mutter>) application.getAttribute("mutterList");
         
-        // ⚠️ NullPointerException回避のための必須チェック
-        // applicationMutterList (mutterList) は、MainServletなどで必ず初期化されている必要があります。
+        // 3. sessionMutterListの全ての要素をApplicationスコープのリストの先頭側に取り込む
+        // 注: リストを逆順に処理することで、addAll()と同じ順序（新しいものが先頭）で要素が追加されます。
         if (applicationMutterList != null) {
-            
-            // 3. sessionMutterListの全ての要素をApplicationスコープのリストに取り込む
-            applicationMutterList.addAll(sessionMutterList);
+            PostMutterLogic postMutterLogic = new PostMutterLogic();
+            // リストの末尾から先頭に向かってループを回す
+            // こうすることで、applicationMutterListに追加される際、
+            // sessionMutterListでの順番が保たれます。
+            for (int i = sessionMutterList.size() - 1; i >= 0; i--) {
+                Mutter mutter = sessionMutterList.get(i);
+                // PostMutterLogicで常にリストの先頭に追加
+                postMutterLogic.execute(mutter,applicationMutterList);
+            }
 
             // 4. アプリケーションスコープへの移動が完了したら、sessionデータを削除
             session.removeAttribute("sessionMutterList");
-            
+
         } else {
              // 初期化漏れを開発者に通知
              System.err.println("Error: applicationMutterList (mutterList) is null. Please ensure it is initialized in Main Servlet or a ServletContextListener.");

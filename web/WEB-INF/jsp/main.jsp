@@ -1,7 +1,7 @@
-<%-- 
-    Document   : main
+<%--
+    Document : main (修正済み)
     Created on : 2025/11/07, 10:07:05
-    Author     : teacher
+    Author : teacher
 --%>
 <%@page import="model.Mutter"%>
 <%@page import="java.util.List"%>
@@ -9,10 +9,10 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
     User loginUser = (User)session.getAttribute("loginUser");
-    // ★ nullチェックを追加 ★
+    // ★ nullチェックはそのまま維持 ★
     if (loginUser == null) {
-        response.sendRedirect("Login"); // ログイン画面に強制的にリダイレクト
-        return; // 処理を中断
+        response.sendRedirect("Login");
+        return;
     }
     List<Mutter> mutterList = (List<Mutter>)application.getAttribute("mutterList");
     String errorMsg = (String)request.getAttribute("errorMsg");
@@ -20,53 +20,82 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="style/login.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/myPage.css">  
-        <title>どこつぶ</title>
+        <title>どこつぶメイン</title>
+        <link rel="stylesheet" href="css/myPage.css">
+        <link href="style/login.css" rel="stylesheet">
     </head>
     <body>
-        <div id="container">
-        <div id="incontainer">
-        <h1>ようこそ<%= loginUser.getName() %>さん</h1>
-        <p>
+        
+        <h1>どこつぶメイン</h1>
+
+        <div class="user-info">
+            <p>
+                <%= loginUser.getName() %>さん（ID: <%= loginUser.getUserId() %>）、ログイン中
+            </p>
             <a href="Logout">ログアウト</a>
+        </div>
+        
+        <p class="refresh-link">
+            <a href="Main">更新</a>
         </p>
-        <p><a href="Main">更新</a></p>
-        <a href="Display">検索閲覧</a> <br>
-        <a href="MyPage">マイページ</a> <br>
-        <form action="Main" method="post">
-            <input type="text" name="text">
-            <input type="submit" value="つぶやく">
-        </form>
+
+        <div class="navigation-links">
+            <a href="Display">検索閲覧</a> <br>
+            <a href="MyPage">マイページ</a>
+        </div>
         
+        <div class="post-form">
+            <form action="Main" method="post">
+                <input type="text" name="text" placeholder="今、どこつぶ？">
+                <input type="submit" value="つぶやく">
+            </form>
+        </div>
+        
+        <%-- エラーメッセージ表示 --%>
         <% if(errorMsg != null){%>
-        <P><%= errorMsg %></p>
+        <p class="error-msg"><%= errorMsg %></p>
         <% } %>
-        <% for(Mutter mutter : mutterList) {%>
-            <p><%= mutter.getUsername() %>：<%= mutter.getText() %>:<%= mutter.getMutterId() %></p>
-        <% } %>
-        </div>
-        </div>
-<!-- koko5 -->
-        <!-- 上に戻るボタン -->
-        <button id="backToTop">↑</button>
         
+        <div class="mutter-list">
+        <% if (mutterList != null) { %>
+            <% for(Mutter mutter : mutterList) {%>
+                <div class="mutter-card">
+                    <div class="mutter-header">
+                        <strong class="mutter-username"><%= mutter.getUsername() %></strong>
+                        <span class="mutter-id">投稿ID: <%= mutter.getMutterId() %></span>
+                    </div>
+
+                    <p class="mutter-text"><%= mutter.getText() %></p>
+
+                    <div class="mutter-stats">
+                        👍 <%= mutter.getGood() %>　
+                        👎 <%= mutter.getBad() %>
+                    </div>
+                    
+                    <div class="mutter-actions">
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+        </div>
+
+        <button id="backToTop">↑</button>
         <script>
         // スクロールイベントでボタン表示切り替え
         window.addEventListener("scroll", function() {
-        const button = document.getElementById("backToTop");
-        if (window.scrollY > 300) { // 300px以上スクロールしたら表示
-            button.style.display = "block";
-        } else {
-            button.style.display = "none";
-        }
-    });
+            const button = document.getElementById("backToTop");
+            if (window.scrollY > 300) { // 300px以上スクロールしたら表示
+                button.style.display = "block";
+            } else {
+                button.style.display = "none";
+            }
+        });
 
         // ボタンクリックでトップへスムーズスクロール
         document.getElementById("backToTop").addEventListener("click", function() {
             window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-</script>        
+        });
+        </script>
     </body>
 </html>
