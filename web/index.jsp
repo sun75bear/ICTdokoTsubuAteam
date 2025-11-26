@@ -22,7 +22,7 @@
             ユーザー名：<input type="text" name="name"><br>
             パスワード：<input type="password" name="pass"><br>
             <input type="submit" value="ログイン"> 
-            <div id="text1"
+            <div id="text1">
             <p>※ユーザー名：ご自身の苗字</p>
             <p>※パスワード：席番（例１５番の方は０１５）</p>
             </div>
@@ -33,4 +33,3 @@
     
 
 </html>
-

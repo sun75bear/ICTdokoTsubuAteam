@@ -13,7 +13,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="style/login.css" rel="stylesheet">
+        <link href="css/login.css" rel="stylesheet">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>どこつぶ</title>
     </head>
@@ -23,9 +23,9 @@
         <h1>どこつぶログイン</h1>
         <% if(loginUser != null){ %>
             <p>ログインに成功しました</p>
-            <p><%= loginUser.getName() %>さん</p>
-            
-            
+
+            <p id ="nameWhite"><%= loginUser.getName() %>さん</p>
+
             <a href="Main">つぶやき投稿・閲覧へ</a><br>
             
 
