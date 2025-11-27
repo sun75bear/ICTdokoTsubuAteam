@@ -60,10 +60,12 @@ public class Display extends HttpServlet {
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
           throws ServletException, IOException {
     //processRequest(request, response);
+    // 【修正点】毎回、VisitCounterのinstanceのtotalVisitプロパティの値を、デスクトップファイルからtotalVisitの最新の値を読み込んで、更新する
+        VisitCounter.getInstance().syncVisitCounter();
 
-    
-        // アクセス回数をカウント
+        // doGet実行と共にアクセス回数を+1カウント (メモリ上の新しい値がインクリメントされる)
         VisitCounter.getInstance().increment();
+    
         // 総アクセス数をリクエスト属性にセット
         request.setAttribute("totalVisits", VisitCounter.getInstance().getTotal());
 
