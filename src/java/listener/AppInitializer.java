@@ -6,6 +6,7 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import model.Mutter; // Mutterクラスをインポート
+import model.VisitCounter;
 
 @WebListener
 public class AppInitializer implements ServletContextListener {
@@ -13,7 +14,14 @@ public class AppInitializer implements ServletContextListener {
     // Webアプリケーション起動時に一度だけ実行される
     @Override
     public void contextInitialized(ServletContextEvent event) {
-        // アプリケーションスコープを取得
+        // visitCounterを.txtでWEB-INFフォルダ内に保存できるようにする        
+        ServletContext context = event.getServletContext();
+        // ★ここで VisicCounterインスタンスを作成、init() メソッドを呼び出してパスを設定する ★
+        VisitCounter.getInstance().init(context); 
+        System.out.println("VisitCounter initialized.");
+        
+        //ここからは初期リスト設定
+        // アプリケーションスコープを取得し、初期リストを格納する
         ServletContext application = event.getServletContext();
         
         // リストがまだ存在しないことを確認し、初期化
