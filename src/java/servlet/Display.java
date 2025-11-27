@@ -12,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.VisitCounter;
 
 /**
@@ -56,18 +57,41 @@ public class Display extends HttpServlet {
    * @throws ServletException if a servlet-specific error occurs
    * @throws IOException if an I/O error occurs
    */
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-          throws ServletException, IOException {
-    //processRequest(request, response);
+@Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        // 1. セッションとタイムスタンプ制御の開始
+        HttpSession session = request.getSession();
+        long currentTime = System.currentTimeMillis();
+        long tenSecondsInMillis = 10 * 1000; // 10秒 = 10,000ミリ秒
 
-    
-        // アクセス回数をカウント
-        VisitCounter.getInstance().increment();
-        // 総アクセス数をリクエスト属性にセット
+        Long lastVisitTime = (Long) session.getAttribute("lastVisit");
+        boolean shouldIncrement = false;
+
+        // 【判定ロジック】: 最後の訪問から10秒以上経過したかチェック
+        if (lastVisitTime == null || (currentTime - lastVisitTime.longValue() > tenSecondsInMillis)) {
+            // 訪問OK: カウンターを増やすフラグを立て、セッションのタイムスタンプを更新する
+            shouldIncrement = true;
+            session.setAttribute("lastVisit", currentTime); // 最新の時刻を記録
+        } else {
+            // 訪問NG: カウンターは増やさない (10秒以内)
+             System.out.println("Visit skipped. Less than 10 seconds elapsed for this session.");
+        }
+        
+        // 【修正点】アクセスのたびに、VisitCounterのinstanceのtotalVisitプロパティの値をtxtファイルの値を読み込んで更新する
+        // (このsyncVisitCounterは常に実行してOK)
+        VisitCounter.getInstance().syncVisitCounter();
+
+        // ★★★ カウンターインクリメントの実行 ★★★
+        if (shouldIncrement) {
+             // doGet実行と共にアクセス回数を+1カウント (メモリ上の新しい値がインクリメントされる)
+             VisitCounter.getInstance().increment();
+             System.out.println("Visit counted. Next count possible after 10 seconds.");
+        }
+        
+        // 総アクセス数をリクエスト属性にセット (インクリメントされた後の値、またはスキップされた後の値)
         request.setAttribute("totalVisits", VisitCounter.getInstance().getTotal());
-
-    
     //************************************************************************************************
         String viewType = request.getParameter("viewType");
 
